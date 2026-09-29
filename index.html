@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Son La Smart Learning - Nền tảng học tập & Bản đồ số thanh thiếu niên</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            dark: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Inter & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg text-slate-900 tracking-tight block">Son La Smart</span>
+                        <span class="text-xs font-semibold text-emerald-600 tracking-wider uppercase">Learning</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-emerald-600 bg-emerald-50 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-house"></i><span>Trang Chủ</span>
+                    </button>
+                    <button onclick="switchTab('english')" id="nav-english" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-book-open"></i><span>Góc Tiếng Anh</span>
+                    </button>
+                    <button onclick="switchTab('map')" id="nav-map" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-map-location-dot"></i><span>Bản Đồ Cơ Hội</span>
+                    </button>
+                    <button onclick="switchTab('gamification')" id="nav-gamification" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-trophy"></i><span>Thử Thách & Điểm Số</span>
+                    </button>
+                </nav>
+
+                <!-- User Profile / Points -->
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full shadow-sm">
+                        <i class="fa-solid fa-coins text-amber-500"></i>
+                        <span id="user-points" class="font-bold text-sm text-amber-700">150 XP</span>
+                    </div>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 flex items-center space-x-3">
+                <i class="fa-solid fa-house w-5"></i><span>Trang Chủ</span>
+            </button>
+            <button onclick="switchTab('english'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 flex items-center space-x-3">
+                <i class="fa-solid fa-book-open w-5"></i><span>Góc Tiếng Anh</span>
+            </button>
+            <button onclick="switchTab('map'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 flex items-center space-x-3">
+                <i class="fa-solid fa-map-location-dot w-5"></i><span>Bản Đồ Cơ Hội</span>
+            </button>
+            <button onclick="switchTab('gamification'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 flex items-center space-x-3">
+                <i class="fa-solid fa-trophy w-5"></i><span>Thử Thách & Điểm Số</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- ================= TAB 1: TRANG CHỦ ================= -->
+        <section id="tab-home" class="tab-content block animate-fadeIn">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-900 text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-emerald-600/50 border border-emerald-400/30 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase">
+                            <i class="fa-solid fa-sparkles text-amber-300"></i>
+                            <span>Nền tảng số hóa thanh thiếu niên Sơn La</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                            Lan tỏa tri thức, <br><span class="text-emerald-300">Kiến tạo tương lai số</span>
+                        </h1>
+                        <p class="text-slate-200 text-base sm:text-lg max-w-xl">
+                            Khám phá kho học liệu số tương tác, sơ đồ tư duy thông minh, cẩm nang học tiếng Anh và tra cứu điểm hỗ trợ kỹ năng số toàn tỉnh Sơn La.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchTab('english')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center space-x-2">
+                                <i class="fa-solid fa-rocket"></i><span>Bắt đầu học ngay</span>
+                            </button>
+                            <button onclick="switchTab('map')" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white font-semibold px-6 py-3 rounded-xl backdrop-blur-md transition-all flex items-center space-x-2">
+                                <i class="fa-solid fa-map"></i><span>Xem Bản Đồ Cơ Hội</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Hero Card Graphic -->
+                    <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-3xl shadow-2xl relative">
+                        <div class="absolute -top-4 -right-4 bg-amber-400 text-slate-900 font-bold text-xs px-3 py-1.5 rounded-full shadow-lg">
+                            <i class="fa-solid fa-fire mr-1"></i> Phổ biến nhất
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-brain text-emerald-300"></i>
+                            <span>Sơ đồ tư duy & Lộ trình số</span>
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="bg-white/10 p-3.5 rounded-xl border border-white/10 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/30 flex items-center justify-center text-emerald-300">
+                                        <i class="fa-solid fa-book"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Tiếng Anh THPT & Giao tiếp</h4>
+                                        <p class="text-xs text-slate-300">12 chủ đề cốt lõi & Từ vựng thông dụng</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-emerald-400/20 text-emerald-300 px-2 py-1 rounded-md font-medium">Miễn phí</span>
+                            </div>
+                            <div class="bg-white/10 p-3.5 rounded-xl border border-white/10 flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-lg bg-teal-500/30 flex items-center justify-center text-teal-300">
+                                        <i class="fa-solid fa-laptop-code"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-sm">Kỹ năng số & An toàn mạng</h4>
+                                        <p class="text-xs text-slate-300">Cẩm nang hướng dẫn thực hành</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-teal-400/20 text-teal-300 px-2 py-1 rounded-md font-medium">Mới</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-2">Hệ sinh thái số toàn diện</h2>
+                    <p class="text-3xl font-extrabold text-slate-900 tracking-tight">Tính năng hỗ trợ học tập nổi bật</p>
+                    <p class="text-slate-600 mt-2">Được thiết kế riêng biệt nhằm đáp ứng nhu cầu tự học và phát triển kỹ năng cho thanh thiếu niên Sơn La.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div onclick="switchTab('english')" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group cursor-pointer">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Góc Học Tiếng Anh</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Cẩm nang từ vựng, ngữ pháp trực quan cùng bài tập tương tác giúp vượt qua nỗi sợ mất gốc tiếng Anh.
+                        </p>
+                        <span class="text-emerald-600 font-semibold text-sm flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+                            <span>Khám phá ngay</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div onclick="switchTab('map')" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group cursor-pointer">
+                        <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Bản Đồ Cơ Hội Học Tập</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Tra cứu danh mục điểm hỗ trợ kỹ năng số, thư viện, điểm wifi công cộng miễn phí tại 12 huyện/thành phố Sơn La.
+                        </p>
+                        <span class="text-teal-600 font-semibold text-sm flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+                            <span>Tra cứu bản đồ</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div onclick="switchTab('gamification')" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all group cursor-pointer">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-puzzle-piece"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Trắc Nghiệm Nhận Thưởng</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Tham gia các thử thách kiến thức, trả lời câu hỏi nhanh để tích lũy điểm XP và nhận huy hiệu danh dự.
+                        </p>
+                        <span class="text-amber-600 font-semibold text-sm flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+                            <span>Tham gia thử thách</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: GÓC TIẾNG ANH ================= -->
+        <section id="tab-english" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeIn">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 sm:p-10 text-white mb-10 shadow-lg">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Góc học tập chuyên sâu</span>
+                <h2 class="text-3xl font-extrabold mt-3 mb-2">Chinh Phục Tiếng Anh Tự Học</h2>
+                <p class="text-emerald-100 max-w-2xl text-sm sm:text-base">
+                    Tổng hợp cẩm nang phát âm, từ vựng theo chủ đề cuộc sống và bài tập trắc nghiệm phản xạ nhanh được thiết kế dành riêng cho học sinh, thanh niên Sơn La.
+                </p>
+            </div>
+
+            <!-- English Sub-tabs / Modules -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left: Vocabulary Flashcard Practice -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-lg text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-clone text-emerald-600"></i>
+                                <span>Flashcard Từ Vựng Thông Dụng</span>
+                            </h3>
+                            <span id="card-counter" class="text-xs font-semibold bg-slate-100 text-slate-600 px-3 py-1 rounded-full">1 / 5</span>
+                        </div>
+
+                        <!-- Flashcard Box -->
+                        <div onclick="flipCard()" id="flashcard" class="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-dashed border-emerald-300 rounded-2xl p-10 text-center cursor-pointer min-h-[220px] flex flex-col items-center justify-center transition-all hover:border-emerald-500 shadow-inner">
+                            <span class="text-xs uppercase font-bold text-emerald-600 tracking-wider mb-2" id="fc-category">Chủ đề: Du lịch & Khám phá</span>
+                            <h4 id="fc-word" class="text-3xl font-black text-slate-900 mb-2">Sustainable Tourism</h4>
+                            <p id="fc-meaning" class="text-slate-600 text-lg font-medium italic">Du lịch bền vững</p>
+                            <p class="text-xs text-slate-400 mt-6"><i class="fa-solid fa-rotate mr-1"></i> Bấm vào thẻ để lật xem nghĩa / ví dụ</p>
+                        </div>
+
+                        <!-- Flashcard Controls -->
+                        <div class="flex justify-between items-center mt-6">
+                            <button onclick="prevCard()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-5 py-2.5 rounded-xl transition-all text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-arrow-left"></i><span>Từ trước</span>
+                            </button>
+                            <button onclick="nextCard()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all text-sm flex items-center space-x-2 shadow-md shadow-emerald-600/20">
+                                <span>Từ tiếp theo</span><i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mini Grammar / Tips Box -->
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                            <span>Mẹo học tiếng Anh hiệu quả cho học sinh vùng cao</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <h4 class="font-semibold text-slate-800 text-sm mb-1">1. Kỹ thuật Shadowing</h4>
+                                <p class="text-xs text-slate-600">Nghe đoạn audio ngắn và lặp lại theo đúng ngữ điệu của người bản xứ ngay lập tức.</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <h4 class="font-semibold text-slate-800 text-sm mb-1">2. Lặp lại ngắt quãng (SRS)</h4>
+                                <p class="text-xs text-slate-600">Ôn lại từ vựng theo khung thời gian 1 ngày - 3 ngày - 7 ngày để nhớ sâu vào trí nhớ dài hạn.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Quick English Quiz Widget -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-circle-question text-teal-600"></i>
+                            <span>Trắc nghiệm nhanh Tiếng Anh</span>
+                        </h3>
+                        <div id="eng-quiz-container">
+                            <p id="eng-question" class="font-semibold text-slate-800 text-sm mb-4">1. Chọn từ đồng nghĩa với "Excited":</p>
+                            <div id="eng-options" class="space-y-3 mb-6">
+                                <!-- Options populated by JS -->
+                            </div>
+                            <div id="eng-feedback" class="text-sm font-semibold mb-4 hidden"></div>
+                            <button id="eng-next-btn" onclick="loadNextEngQuiz()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl transition-all text-sm hidden">
+                                Câu hỏi tiếp theo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: BẢN ĐỒ CƠ HỘI HỌC TẬP ================= -->
+        <section id="tab-map" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeIn">
+            <div class="bg-gradient-to-r from-teal-700 to-emerald-800 rounded-3xl p-8 sm:p-10 text-white mb-10 shadow-lg">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Mô hình số hóa cộng đồng</span>
+                <h2 class="text-3xl font-extrabold mt-3 mb-2">Bản Đồ Cơ Hội Học Tập & Kỹ Năng Số Sơn La</h2>
+                <p class="text-teal-100 max-w-2xl text-sm sm:text-base">
+                    Tra cứu danh sách các điểm hỗ trợ kỹ năng số cộng đồng, thư viện số, không gian học tập công cộng và điểm wifi miễn phí tại các huyện, thành phố trên địa bàn tỉnh Sơn La.
+                </p>
+            </div>
+
+            <!-- Search and Filter Controls -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div class="relative w-full sm:w-96">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="map-search" oninput="filterLocations()" placeholder="Tìm kiếm địa điểm, huyện, hoặc dịch vụ..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                    <button onclick="filterCategory('all')" id="cat-all" class="filter-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all">Tất cả</button>
+                    <button onclick="filterCategory('wifi')" id="cat-wifi" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all">Điểm Wifi Công Cộng</button>
+                    <button onclick="filterCategory('lib')" id="cat-lib" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all">Thư Viện / Điểm Số</button>
+                </div>
+            </div>
+
+            <!-- Locations Grid -->
+            <div id="locations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: THƯỞNG & GAMIFICATION ================= -->
+        <section id="tab-gamification" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fadeIn">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl p-8 sm:p-10 text-white mb-10 shadow-lg">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Đấu trường trí tuệ</span>
+                <h2 class="text-3xl font-extrabold mt-3 mb-2">Thử Thách Tri Thức & Nhận Điểm Thưởng</h2>
+                <p class="text-amber-100 max-w-2xl text-sm sm:text-base">
+                    Hoàn thành các câu hỏi trắc nghiệm kiến thức chung, lịch sử, địa phương Sơn La và chuyển đổi số để thăng hạng tài khoản và nhận huy hiệu danh dự!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Quiz Area -->
+                <div class="lg:col-span-2 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                        <div>
+                            <span class="text-xs font-bold text-amber-600 uppercase">Thử thách hàng ngày</span>
+                            <h3 class="text-lg font-bold text-slate-900" id="challenge-title">Câu hỏi Kiến thức Tổng hợp & Địa phương</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 px-3 py-1 rounded-lg text-amber-700 font-bold text-xs">
+                            +50 XP mỗi câu đúng
+                        </div>
+                    </div>
+
+                    <div id="challenge-box">
+                        <p id="chal-question" class="font-bold text-slate-800 text-base mb-6">Đang tải câu hỏi...</p>
+                        <div id="chal-options" class="space-y-3 mb-6">
+                            <!-- Options -->
+                        </div>
+                        <div id="chal-feedback" class="text-sm font-semibold mb-4 hidden p-3 rounded-xl"></div>
+                        <button id="chal-next-btn" onclick="loadNextChallenge()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl transition-all text-sm hidden shadow-md shadow-amber-500/20">
+                            Tiếp tục thử thách
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Leaderboard & Badges -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-900 mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-medal text-amber-500"></i>
+                            <span>Huy Hiệu Đã Đạt Được</span>
+                        </h3>
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-2xl mb-1">🌱</div>
+                                <span class="text-xs font-semibold text-slate-700 block">Tân binh số</span>
+                            </div>
+                            <div id="badge-english" class="bg-slate-50 opacity-40 p-3 rounded-xl border border-slate-100">
+                                <div class="text-2xl mb-1">🇬🇧</div>
+                                <span class="text-xs font-semibold text-slate-700 block">Sĩ tử Anh ngữ</span>
+                            </div>
+                            <div id="badge-master" class="bg-slate-50 opacity-40 p-3 rounded-xl border border-slate-100">
+                                <div class="text-2xl mb-1">🏆</div>
+                                <span class="text-xs font-semibold text-slate-700 block">Cao thủ tri thức</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-900 mb-4 flex items-center space-x-2">
+                            <i class="fa-solid fa-ranking-star text-emerald-600"></i>
+                            <span>Bảng Xếp Hạng Thanh Niên</span>
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">1</span>
+                                    <span class="font-semibold text-sm text-slate-800">Lò Văn Hùng (Mường La)</span>
+                                </div>
+                                <span class="text-xs font-bold text-emerald-700">1,450 XP</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center">2</span>
+                                    <span class="font-semibold text-sm text-slate-800">Tòng Thị Mai (TP. Sơn La)</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-600">1,280 XP</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 font-bold text-xs flex items-center justify-center">3</span>
+                                    <span class="font-semibold text-sm text-slate-800">Hoàng Văn Nam (Mai Sơn)</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-600">1,150 XP</span>
+                            </div>
+                            <!-- Current User -->
+                            <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center">You</span>
+                                    <span id="leaderboard-my-name" class="font-bold text-sm text-amber-900">Bạn (Tài khoản hiện tại)</span>
+                                </div>
+                                <span id="leaderboard-my-xp" class="text-xs font-extrabold text-amber-700">150 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-4 md:col-span-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="font-bold text-lg tracking-tight">Son La Smart Learning</span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-sm">
+                        Nền tảng số hóa học tập trực tuyến, cẩm nang tiếng Anh và bản đồ cơ hội hỗ trợ kỹ năng số dành cho thanh thiếu niên tỉnh Sơn La.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-emerald-400 mb-4">Danh Mục Nhanh</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><button onclick="switchTab('home')" class="hover:text-white transition-all">Trang Chủ</button></li>
+                        <li><button onclick="switchTab('english')" class="hover:text-white transition-all">Góc Tiếng Anh</button></li>
+                        <li><button onclick="switchTab('map')" class="hover:text-white transition-all">Bản Đồ Cơ Hội</button></li>
+                        <li><button onclick="switchTab('gamification')" class="hover:text-white transition-all">Thử Thách Trí Tuệ</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-emerald-400 mb-4">Liên Hệ & Hỗ Trợ</h4>
+                    <p class="text-sm text-slate-400 mb-2"><i class="fa-solid fa-location-dot mr-2 text-emerald-500"></i> Thành phố Sơn La, Tỉnh Sơn La</p>
+                    <p class="text-sm text-slate-400 mb-2"><i class="fa-solid fa-envelope mr-2 text-emerald-500"></i> hotro@sonlasmartlearning.vn</p>
+                    <p class="text-sm text-slate-400"><i class="fa-solid fa-phone mr-2 text-emerald-500"></i> (0212) 3852 xxx</p>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+                <p>&copy; 2026 Son La Smart Learning. Sáng kiến Chuyển đổi số & Hỗ trợ học tập thanh thiếu niên.</p>
+                <p class="mt-2 sm:mt-0">Thiết kế hiện đại - Thân thiện - Responsive</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Global State
+        let userPoints = 150;
+
+        // Navigation Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+            
+            const target = document.getElementById('tab-' + tabId);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update Nav active styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-emerald-600', 'bg-emerald-50');
+                btn.classList.add('text-slate-600', 'hover:text-emerald-600', 'hover:bg-slate-100');
+            });
+
+            const activeNav = document.getElementById('nav-' + tabId);
+            if(activeNav) {
+                activeNav.classList.remove('text-slate-600', 'hover:text-emerald-600', 'hover:bg-slate-100');
+                activeNav.classList.add('text-emerald-600', 'bg-emerald-50');
+            }
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // --- Flashcard Logic ---
+        const flashcards = [
+            { category: "Du lịch & Khám phá", word: "Sustainable Tourism", meaning: "Du lịch bền vững - hình thức du lịch bảo vệ môi trường và văn hóa bản địa." },
+            { category: "Học tập & Kỹ năng số", word: "Digital Literacy", meaning: "Năng lực số - khả năng sử dụng thiết bị công nghệ và internet an toàn, hiệu quả." },
+            { category: "Phát triển bản thân", word: "Growth Mindset", meaning: "Tư duy cầu tiến - tin rằng năng lực có thể phát triển qua nỗ lực và học hỏi." },
+            { category: "Khởi nghiệp thanh niên", word: "Innovation", meaning: "Đổi mới sáng tạo - tạo ra các giải pháp mới cho các vấn đề cộng đồng." },
+            { category: "Văn hóa địa phương", word: "Cultural Heritage", meaning: "Di sản văn hóa - các giá trị truyền thống được lưu giữ qua nhiều thế hệ." }
+        ];
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        function updateFlashcard() {
+            const card = flashcards[currentCardIndex];
+            document.getElementById('fc-category').innerText = "Chủ đề: " + card.category;
+            document.getElementById('fc-word').innerText = isCardFlipped ? card.meaning : card.word;
+            document.getElementById('fc-meaning').style.display = isCardFlipped ? 'none' : 'block';
+            document.getElementById('fc-meaning').innerText = card.meaning;
+            document.getElementById('card-counter').innerText = (currentCardIndex + 1) + " / " + flashcards.length;
+        }
+
+        function flipCard() {
+            isCardFlipped = !isCardFlipped;
+            const wordEl = document.getElementById('fc-word');
+            const cardData = flashcards[currentCardIndex];
+            if(isCardFlipped) {
+                wordEl.innerText = cardData.meaning;
+                wordEl.className = "text-xl font-bold text-emerald-800 mb-2 transition-all";
+                document.getElementById('fc-meaning').style.display = 'none';
+            } else {
+                wordEl.innerText = cardData.word;
+                wordEl.className = "text-3xl font-black text-slate-900 mb-2 transition-all";
+                document.getElementById('fc-meaning').style.display = 'block';
+            }
+        }
+
+        function nextCard() {
+            isCardFlipped = false;
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            updateFlashcard();
+        }
+
+        function prevCard() {
+            isCardFlipped = false;
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            updateFlashcard();
+        }
+
+        // --- English Quiz Logic ---
+        const engQuizzes = [
+            {
+                q: "1. Chọn từ đồng nghĩa với 'Excited':",
+                options: ["Bored", "Thrilled", "Tired", "Sad"],
+                correct: 1
+            },
+            {
+                q: "2. Ý nghĩa của cụm từ 'Online Learning' là gì?",
+                options: ["Học trực tiếp trên lớp", "Học trực tuyến qua Internet", "Học nghề thủ công", "Tự học ngoài vườn"],
+                correct: 1
+            },
+            {
+                q: "3. Điền giới từ đúng: 'Interested ___ technology.'",
+                options: ["in", "on", "at", "with"],
+                correct: 0
+            }
+        ];
+        let currentEngQuiz = 0;
+
+        function loadEngQuiz() {
+            if(currentEngQuiz >= engQuizzes.length) currentEngQuiz = 0;
+            const quiz = engQuizzes[currentEngQuiz];
+            document.getElementById('eng-question').innerText = quiz.q;
+            const optsContainer = document.getElementById('eng-options');
+            optsContainer.innerHTML = '';
+            
+            quiz.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-xl bg-slate-50 border border-slate-200 hover:bg-emerald-50 hover:border-emerald-300 font-medium text-sm transition-all";
+                btn.innerText = opt;
+                btn.onclick = () => checkEngAnswer(idx, quiz.correct, btn);
+                optsContainer.appendChild(btn);
+            });
+            document.getElementById('eng-feedback').classList.add('hidden');
+            document.getElementById('eng-next-btn').classList.add('hidden');
+        }
+
+        function checkEngAnswer(selected, correct, btnElem) {
+            const feedback = document.getElementById('eng-feedback');
+            feedback.classList.remove('hidden');
+            
+            // Disable all options
+            const buttons = document.getElementById('eng-options').children;
+            for(let b of buttons) {
+                b.disabled = true;
+                b.classList.add('opacity-70');
+            }
+
+            if(selected === correct) {
+                btnElem.className = "w-full text-left p-3 rounded-xl bg-emerald-100 border border-emerald-400 font-bold text-sm text-emerald-800";
+                feedback.className = "text-sm font-semibold mb-4 text-emerald-600 bg-emerald-50 p-3 rounded-xl border border-emerald-200";
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Chính xác! Bạn nhận được +30 XP.';
+                userPoints += 30;
+                updatePointsDisplay();
+            } else {
+                btnElem.className = "w-full text-left p-3 rounded-xl bg-rose-100 border border-rose-400 font-bold text-sm text-rose-800";
+                buttons[correct].className = "w-full text-left p-3 rounded-xl bg-emerald-100 border border-emerald-400 font-bold text-sm text-emerald-800";
+                feedback.className = "text-sm font-semibold mb-4 text-rose-600 bg-rose-50 p-3 rounded-xl border border-rose-200";
+                feedback.innerHTML = '<i class="fa-solid fa-circle-xmark mr-1"></i> Chưa chính xác. Hãy thử lại ở câu tiếp theo!';
+            }
+            document.getElementById('eng-next-btn').classList.remove('hidden');
+        }
+
+        function loadNextEngQuiz() {
+            currentEngQuiz++;
+            loadEngQuiz();
+        }
+
+        // --- Map Locations Data (Son La) ---
+        const locationsData = [
+            {
+                name: "Điểm hỗ trợ số & Thư viện TP. Sơn La",
+                category: "lib",
+                badge: "Thư viện / Điểm số",
+                badgeColor: "bg-teal-100 text-teal-800",
+                address: "Đường Chu Văn An, Phường Tô Hiệu, TP. Sơn La",
+                services: "Trang bị 20 máy tính kết nối Internet cáp quang, hỗ trợ tra cứu học tập và làm thủ tục hành chính công miễn phí.",
+                wifi: "Có Wifi tốc độ cao (Free SonLa Youth)",
+                contact: "Đoàn Thanh niên TP. Sơn La"
+            },
+            {
+                name: "Điểm Wifi & Không gian tự học Mường La",
+                category: "wifi",
+                badge: "Điểm Wifi Công Cộng",
+                badgeColor: "bg-emerald-100 text-emerald-800",
+                address: "Nhà văn hóa xã Ít Ong, Huyện Mường La",
+                services: "Không gian mở phục vụ học sinh ôn tập, tra cứu tài liệu trực tuyến và đọc sách báo.",
+                wifi: "Phủ sóng toàn bộ khuôn viên nhà văn hóa",
+                contact: "Xã Đoàn Ít Ong"
+            },
+            {
+                name: "Trung tâm Kỹ năng số & Thư viện Mai Sơn",
+                category: "lib",
+                badge: "Thư viện / Điểm số",
+                badgeColor: "bg-teal-100 text-teal-800",
+                address: "Thị trấn Hát Lót, Huyện Mai Sơn",
+                services: "Tổ chức các lớp tập huấn kỹ năng số cơ bản cho thanh thiếu niên, tủ sách hướng nghiệp và khởi nghiệp.",
+                wifi: "Có Wifi miễn phí & Máy in tài liệu học tập",
+                contact: "Huyện Đoàn Mai Sơn"
+            },
+            {
+                name: "Điểm truy cập Internet cộng đồng Quỳnh Nhai",
+                category: "wifi",
+                badge: "Điểm Wifi Công Cộng",
+                badgeColor: "bg-emerald-100 text-emerald-800",
+                address: "Khu trung tâm xã Mường Giàng, Huyện Quỳnh Nhai",
+                services: "Hỗ trợ học sinh học trực tuyến, tìm kiếm thông tin nông nghiệp thông minh và kỹ năng số.",
+                wifi: "Wifi cộng đồng tốc độ cao",
+                contact: "Đoàn TNCS Hồ Chí Minh Quỳnh Nhai"
+            },
+            {
+                name: "Điểm hỗ trợ thanh niên chuyển đổi số Mộc Châu",
+                category: "lib",
+                badge: "Thư viện / Điểm số",
+                badgeColor: "bg-teal-100 text-teal-800",
+                address: "Tiểu khu 3, Thị trấn Mộc Châu, Huyện Mộc Châu",
+                services: "Không gian sáng tạo trẻ, hỗ trợ học ngoại ngữ trực tuyến, kết nối mentor hướng nghiệp.",
+                wifi: "Wifi gigabit miễn phí",
+                contact: "Huyện Đoàn Mộc Châu"
+            },
+            {
+                name: "Điểm Wifi công cộng Bắc Yên",
+                category: "wifi",
+                badge: "Điểm Wifi Công Cộng",
+                badgeColor: "bg-emerald-100 text-emerald-800",
+                address: "Khu vực Quảng tâm Thị trấn Bắc Yên",
+                services: "Điểm truy cập internet phục vụ đồng bào và thanh thiếu niên tra cứu kiến thức học tập.",
+                wifi: "Phủ sóng quảng trường và khu vực lân cận",
+                contact: "Xã/Thị trấn Đoàn Bắc Yên"
+            }
+        ];
+
+        function renderLocations(filterCat = 'all', searchKeyword = '') {
+            const grid = document.getElementById('locations-grid');
+            grid.innerHTML = '';
+
+            const filtered = locationsData.filter(item => {
+                const matchCat = (filterCat === 'all' || item.category === filterCat);
+                const matchSearch = item.name.toLowerCase().includes(searchKeyword.toLowerCase()) || 
+                                    item.address.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+                                    item.services.toLowerCase().includes(searchKeyword.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Không tìm thấy địa điểm phù hợp với từ khóa của bạn.</div>`;
+                return;
+            }
+
+            filtered.forEach(loc => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full ${loc.badgeColor}">${loc.badge}</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-signal mr-1 text-emerald-500"></i>Active</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-2">${loc.name}</h3>
+                        <p class="text-xs text-slate-500 mb-3 flex items-start space-x-1.5">
+                            <i class="fa-solid fa-location-dot text-rose-500 mt-0.5"></i>
+                            <span>${loc.address}</span>
+                        </p>
+                        <p class="text-xs text-slate-600 mb-4 bg-slate-50 p-3 rounded-xl border border-slate-100 leading-relaxed">
+                            ${loc.services}
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-100 pt-4 mt-2 flex justify-between items-center text-xs text-slate-500">
+                        <span><i class="fa-solid fa-wifi text-emerald-600 mr-1"></i> ${loc.wifi}</span>
+                        <span class="font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">${loc.contact}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all";
+            });
+            const activeBtn = document.getElementById('cat-' + cat);
+            if(activeBtn) {
+                activeBtn.className = "filter-btn bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all";
+            }
+            const keyword = document.getElementById('map-search').value;
+            renderLocations(cat, keyword);
+        }
+
+        function filterLocations() {
+            const keyword = document.getElementById('map-search').value;
+            // determine active category
+            let activeCat = 'all';
+            if(document.getElementById('cat-wifi').classList.contains('bg-emerald-600')) activeCat = 'wifi';
+            if(document.getElementById('cat-lib').classList.contains('bg-emerald-600')) activeCat = 'lib';
+            renderLocations(activeCat, keyword);
+        }
+
+        // --- Challenges / Gamification Logic ---
+        const challenges = [
+            {
+                q: "1. Đâu là địa danh nổi tiếng với cao nguyên chè xanh mướt và đồi chè hình trái tim tại tỉnh Sơn La?",
+                options: ["Huyện Mường La", "Huyện Mộc Châu", "Huyện Quỳnh Nhai", "Huyện Bắc Yên"],
+                correct: 1
+            },
+            {
+                q: "2. Nhà tù Sơn La, di tích lịch sử quốc gia đặc biệt nằm ở thành phố Sơn La, được thực dân Pháp xây dựng vào năm nào?",
+                options: ["1908", "1930", "1945", "1954"],
+                correct: 0
+            },
+            {
+                q: "3. Kỹ năng nào dưới đây quan trọng nhất khi thanh thiếu niên tham gia không gian mạng an toàn?",
+                options: ["Chia sẻ mọi thông tin cá nhân", "Nhận diện tin giả và bảo mật mật khẩu", "Không bao giờ sử dụng Internet", "Tải tất cả các tệp lạ về máy"],
+                correct: 1
+            }
+        ];
+        let currentChallengeIdx = 0;
+
+        function loadChallenge() {
+            if(currentChallengeIdx >= challenges.length) currentChallengeIdx = 0;
+            const chal = challenges[currentChallengeIdx];
+            document.getElementById('chal-question').innerText = chal.q;
+            const optsContainer = document.getElementById('chal-options');
+            optsContainer.innerHTML = '';
+
+            chal.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-amber-50 hover:border-amber-300 font-medium text-sm transition-all";
+                btn.innerText = opt;
+                btn.onclick = () => checkChallengeAnswer(idx, chal.correct, btn);
+                optsContainer.appendChild(btn);
+            });
+            document.getElementById('chal-feedback').classList.add('hidden');
+            document.getElementById('chal-next-btn').classList.add('hidden');
+        }
+
+        function checkChallengeAnswer(selected, correct, btnElem) {
+            const feedback = document.getElementById('chal-feedback');
+            feedback.classList.remove('hidden');
+
+            const buttons = document.getElementById('chal-options').children;
+            for(let b of buttons) {
+                b.disabled = true;
+                b.classList.add('opacity-70');
+            }
+
+            if(selected === correct) {
+                btnElem.className = "w-full text-left p-3.5 rounded-xl bg-emerald-100 border border-emerald-400 font-bold text-sm text-emerald-800";
+                feedback.className = "text-sm font-semibold mb-4 text-emerald-800 bg-emerald-50 p-3.5 rounded-xl border border-emerald-200";
+                feedback.innerHTML = '<i class="fa-solid fa-trophy mr-1 text-amber-500"></i> Xuất sắc! Bạn đã trả lời đúng và nhận được +50 XP.';
+                userPoints += 50;
+                updatePointsDisplay();
+
+                // Unlock badges conditionally
+                if(userPoints >= 200) {
+                    document.getElementById('badge-english').classList.remove('opacity-40');
+                }
+                if(userPoints >= 300) {
+                    document.getElementById('badge-master').classList.remove('opacity-40');
+                }
+            } else {
+                btnElem.className = "w-full text-left p-3.5 rounded-xl bg-rose-100 border border-rose-400 font-bold text-sm text-rose-800";
+                buttons[correct].className = "w-full text-left p-3.5 rounded-xl bg-emerald-100 border border-emerald-400 font-bold text-sm text-emerald-800";
+                feedback.className = "text-sm font-semibold mb-4 text-rose-800 bg-rose-50 p-3.5 rounded-xl border border-rose-200";
+                feedback.innerHTML = '<i class="fa-solid fa-circle-xmark mr-1"></i> Chưa chính xác. Đáp án được tô màu xanh lá phía trên.';
+            }
+            document.getElementById('chal-next-btn').classList.remove('hidden');
+        }
+
+        function loadNextChallenge() {
+            currentChallengeIdx++;
+            loadChallenge();
+        }
+
+        function updatePointsDisplay() {
+            document.getElementById('user-points').innerText = userPoints + " XP";
+            document.getElementById('leaderboard-my-xp').innerText = userPoints + " XP";
+        }
+
+        // Initialize on Load
+        window.onload = function() {
+            updateFlashcard();
+            loadEngQuiz();
+            renderLocations();
+            loadChallenge();
+        };
+    </script>
+</body>
+</html>
